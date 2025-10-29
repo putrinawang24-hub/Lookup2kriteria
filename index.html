@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan LOOKUP 2 Kriteria di Excel</title>
+    <!-- Memuat Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Menggunakan font Inter */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Style tambahan untuk code block */
+        pre {
+            background-color: #2d3748; /* gray-800 */
+            color: #e2e8f0; /* gray-200 */
+            padding: 1rem;
+            border-radius: 0.5rem; /* rounded-lg */
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+        }
+    </style>
+    <!-- Memuat font Inter dari Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-900 leading-relaxed">
+
+    <!-- Kontainer Utama -->
+    <div class="container max-w-4xl mx-auto p-6 md:p-10 my-10 bg-white rounded-xl shadow-2xl">
+
+        <!-- Judul Utama -->
+        <header class="text-center mb-10">
+            <h1 class="text-3xl md:text-5xl font-bold text-green-700">
+                Advanced Excel: LOOKUP dengan 2 Kriteria
+            </h1>
+            <p class="text-lg md:text-xl text-gray-600 mt-3">
+                Cara mencari data berdasarkan dua nilai sekaligus.
+            </p>
+        </header>
+
+        <!-- Penjelasan Masalah -->
+        <p class="text-lg text-gray-700 mb-6">
+            Seringkali, satu kriteria saja tidak cukup. Anda mungkin perlu mencari "Gaji" untuk karyawan bernama "Budi" di departemen "Sales", karena mungkin ada "Budi" lain di departemen "IT".
+        </p>
+        
+        <p class="text-lg text-gray-700 mb-6 font-semibold">
+            Kita akan gunakan contoh tabel data ini:
+        </p>
+
+        <!-- Contoh Tabel Data -->
+        <div class="overflow-x-auto rounded-lg shadow-md border border-gray-200 mb-10">
+            <table class="w-full min-w-max border-collapse">
+                <thead class="bg-gray-700 text-white">
+                    <tr>
+                        <th class="p-3 text-left font-semibold">Kolom A<br>(Nama Depan)</th>
+                        <th class="p-3 text-left font-semibold">Kolom B<br>(Departemen)</th>
+                        <th class="p-3 text-left font-semibold">Kolom C<br>(Gaji)</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                    <tr class="bg-white hover:bg-gray-50 border-b border-gray-200">
+                        <td class="p-3">Andi</td>
+                        <td class="p-3">Sales</td>
+                        <td class="p-3">5.000.000</td>
+                    </tr>
+                    <tr class="bg-gray-50 hover:bg-gray-100 border-b border-gray-200">
+                        <td class="p-3">Budi</td>
+                        <td class="p-3">IT</td>
+                        <td class="p-3">7.000.000</td>
+                    </tr>
+                    <tr class="bg-white hover:bg-gray-50 border-b border-gray-200">
+                        <td class="p-3">Andi</td>
+                        <td class="p-3">IT</td>
+                        <td class="p-3">8.000.000</td>
+                    </tr>
+                    <tr class="bg-gray-50 hover:bg-gray-100 border-b border-gray-200">
+                        <td class="p-3">Budi</td>
+                        <td class="p-3">Sales</td>
+                        <td class="p-3">6.000.000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <p class="text-lg text-gray-700 mb-8">
+            <strong>Tantangan:</strong> Bagaimana cara kita mencari Gaji untuk <strong>"Budi"</strong> di departemen <strong>"Sales"</strong>? (Jawabannya harus 6.000.000).
+        </p>
+
+        <!-- Bagian 1: Kolom Bantu (Helper Column) -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-semibold text-gray-800 border-l-4 border-green-600 pl-4 mb-5">
+                Metode 1: Kolom Bantu (Cara Klasik Termudah)
+            </h2>
+            <p class="mb-4 text-gray-700">Metode ini bekerja di semua versi Excel dan paling mudah dipahami. Kita membuat satu "kunci unik" buatan.</p>
+            
+            <h3 class="text-xl font-semibold mb-3 mt-5">Langkah-langkah:</h3>
+            <ol class="list-decimal list-outside pl-5 space-y-3 my-5 text-gray-700">
+                <li>
+                    <strong>Buat Kolom Bantu:</strong> Tambahkan kolom baru di sebelah kiri data Anda (misal: di Kolom A baru).
+                </li>
+                <li>
+                    <strong>Gabungkan Kriteria:</strong> Di kolom baru (sel A2), gabungkan Nama Depan (B2) dan Departemen (C2).
+                    <pre><code>=B2 & C2</code></pre>
+                    <p class="mt-2">Tarik formula ini ke bawah. Anda akan mendapatkan "AndiSales", "BudiIT", "AndiIT", "BudiSales".</p>
+                </li>
+                <li>
+                    <strong>Gunakan VLOOKUP:</strong> Sekarang lakukan VLOOKUP biasa menggunakan "kunci unik" baru Anda.
+                    <pre><code>=VLOOKUP("BudiSales", A:D, 4, FALSE)</code></pre>
+                    <p class="mt-2">(Mencari "BudiSales" di kolom A, mengembalikan data dari kolom ke-4, yaitu Gaji).
+                </li>
+            </ol>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                    <h4 class="font-bold text-green-800">Kelebihan:</h4>
+                    <p class="text-gray-800">Sangat mudah dimengerti dan 100% kompatibel dengan semua versi Excel.</p>
+                </div>
+                <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                    <h4 class="font-bold text-red-800">Kekurangan:</h4>
+                    <p class="text-gray-800">Menambah "sampah" di data Anda (kolom bantu) dan tidak elegan.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Bagian 2: XLOOKUP -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-semibold text-gray-800 border-l-4 border-green-600 pl-4 mb-5">
+                Metode 2: XLOOKUP (Cara Modern Terbaik)
+            </h2>
+            <p class="mb-4 text-gray-700">Jika Anda menggunakan Excel 365/2021+, ini adalah cara terbaik. Bersih, cepat, dan tidak perlu kolom bantu.</p>
+            
+            <h3 class="text-xl font-semibold mb-3 mt-5">Sintaks:</h3>
+            <p class="mb-4 text-gray-700">Kita menggunakan logika boolean (TRUE/FALSE). Kita mencari nilai <code>1</code> (yang artinya <code>TRUE</code>).</p>
+            <pre><code>=XLOOKUP(1, (range_kriteria1 = kriteria1) * (range_kriteria2 = kriteria2), range_hasil)</code></pre>
+
+            <h3 class="text-xl font-semibold mb-3 mt-5">Contoh:</h3>
+            <pre><code>=XLOOKUP(1, (A2:A5="Budi") * (B2:B5="Sales"), C2:C5)</code></pre>
+
+            <div class="bg-yellow-50 border border-yellow-300 p-5 rounded-lg italic text-gray-800 mt-6 shadow-sm">
+                <strong>Cara Kerjanya:</strong>
+                <ol class="list-decimal list-outside pl-5 mt-2 space-y-2">
+                    <li><code>(A2:A5="Budi")</code> menghasilkan: <code>{FALSE; TRUE; FALSE; TRUE}</code></li>
+                    <li><code>(B2:B5="Sales")</code> menghasilkan: <code>{TRUE; FALSE; FALSE; TRUE}</code></li>
+                    <li>Saat dikalikan (<code>*</code>), Excel memperlakukan <code>TRUE=1</code> dan <code>FALSE=0</code>.<br>
+                        <code>{0;1;0;1} * {1;0;0;1}</code> = <code>{0; 0; 0; 1}</code>
+                    </li>
+                    <li>XLOOKUP mencari angka <code>1</code> di array hasil <code>{0;0;0;1}</code>, menemukannya di posisi ke-4.</li>
+                    <li>Ia lalu mengembalikan nilai di posisi ke-4 dari <code>range_hasil</code> (C2:C5), yaitu <strong>6.000.000</strong>.</li>
+                </ol>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                    <h4 class="font-bold text-green-800">Kelebihan:</h4>
+                    <p class="text-gray-800">Sangat bersih (tanpa kolom bantu) dan logikanya jelas.</p>
+                </div>
+                <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                    <h4 class="font-bold text-red-800">Kekurangan:</h4>
+                    <p class="text-gray-800">Hanya berfungsi di Excel 365 / 2021+.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bagian 3: INDEX + MATCH -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-semibold text-gray-800 border-l-4 border-green-600 pl-4 mb-5">
+                Metode 3: INDEX + MATCH (Cara Klasik Profesional)
+            </h2>
+            <p class="mb-4 text-gray-700">Ini adalah cara para "pro" melakukannya sebelum XLOOKUP ada. Logikanya mirip XLOOKUP, tapi sintaksnya lebih rumit.</p>
+            
+            <h3 class="text-xl font-semibold mb-3 mt-5">Sintaks:</h3>
+            <p class="mb-4 text-gray-700">Ini adalah "Array Formula". Di Excel 2019 ke bawah, Anda harus menekan <strong>Ctrl + Shift + Enter</strong> setelah mengetik formula ini.</p>
+            <pre><code>{=INDEX(range_hasil, MATCH(1, (range_kriteria1 = kriteria1) * (range_kriteria2 = kriteria2), 0))}</code></pre>
+
+            <h3 class="text-xl font-semibold mb-3 mt-5">Contoh:</h3>
+            <pre><code>=INDEX(C2:C5, MATCH(1, (A2:A5="Budi") * (B2:B5="Sales"), 0))</code></pre>
+            <p class="mt-2 text-gray-700">(Jangan lupa tekan <strong>Ctrl + Shift + Enter</strong> jika Anda tidak menggunakan Excel 365).</p>
+            
+            <div class="bg-yellow-50 border border-yellow-300 p-5 rounded-lg italic text-gray-800 mt-6 shadow-sm">
+                <strong>Cara Kerjanya:</strong>
+                <ul class="list-disc list-outside pl-5 mt-2">
+                    <li>Logikanya <strong>identik</strong> dengan XLOOKUP.</li>
+                    <li><code>MATCH(1, ..., 0)</code> mencari posisi angka <code>1</code> dari hasil perkalian array. (Ia akan menemukan posisi ke-4).</li>
+                    <li><code>INDEX(C2:C5, 4)</code> kemudian mengambil nilai ke-4 dari kolom Gaji (C2:C5).</li>
+                </ul>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                    <h4 class="font-bold text-green-800">Kelebihan:</h4>
+                    <p class="text-gray-800">Sangat kuat dan berfungsi di hampir semua versi Excel (Excel 2007+).</p>
+                </div>
+                <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                    <h4 class="font-bold text-red-800">Kekurangan:</h4>
+                    <p class="text-gray-800">Sintaks rumit dan butuh <strong>Ctrl+Shift+Enter</strong> di versi lama (mudah lupa).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bagian 4: Rekomendasi -->
+        <section>
+            <h2 class="text-3xl font-semibold text-gray-800 text-center mb-6">
+                Rekomendasi Ahli
+            </h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Card 1: XLOOKUP -->
+                <div class="bg-green-50 p-6 rounded-lg shadow-lg border border-green-200 ring-2 ring-green-600">
+                    <h3 class="text-xl font-bold text-green-700 mb-3">1. Pilihan Terbaik: XLOOKUP</h3>
+                    <p class="text-gray-800">
+                        Jika Anda pakai <strong>Excel 365/2021+</strong>, gunakan ini. Ini adalah standar baru.
+                    </p>
+                </div>
+                <!-- Card 2: Kolom Bantu -->
+                <div class="bg-yellow-50 p-6 rounded-lg shadow-lg border border-yellow-300">
+                    <h3 class="text-xl font-bold text-yellow-800 mb-3">2. Pilihan Termudah: Kolom Bantu</h3>
+                    <p class="text-gray-800">
+                        Jika Anda butuh kompatibilitas total atau ingin cara yang paling mudah diajarkan ke tim.
+                    </p>
+                </div>
+                <!-- Card 3: INDEX MATCH -->
+                <div class="bg-gray-100 p-6 rounded-lg shadow-lg border border-gray-300">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">3. Pilihan Kompatibel (Pro): INDEX+MATCH</h3>
+                    <p class="text-gray-800">
+                        Jika Anda butuh kompatibilitas di versi lama (2007-2019) tapi <strong>tidak mau</strong> menambah kolom bantu.
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+    </div> <!-- Akhir Kontainer Utama -->
+
+</body>
+</html>
